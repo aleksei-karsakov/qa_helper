@@ -12,8 +12,7 @@ startBtn.addEventListener("click",() => {
         let i = url.indexOf('-')+1;
         for (let i = (url.indexOf('-')+1); !isNaN(url[i]); i++) {
             groupTitle += url[i];
-            }
-        // alert(groupTitle);   
+            }  
         if (YT.groups.issue) {
             chrome.tabs.group({tabIds:tab.id},function (groupId){
                 chrome.tabGroups.update(groupId, {collapsed:false, title:groupTitle});
