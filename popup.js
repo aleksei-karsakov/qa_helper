@@ -19,7 +19,7 @@ startBtn.addEventListener("click",() => {
                 chrome.tabGroups.update(groupId, {collapsed:false, title:groupTitle});
             }); 
         } else {
-            alert("There are no active tabs");
+            alert("There are no active tabs 666");
         }
     })
         })   
