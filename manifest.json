@@ -1,0 +1,22 @@
+{
+    "name": "QA Helper",
+    "description": "Assists the QA engineer in getting started with the ticket",
+    "version": "1.0",
+    "manifest_version": 3,
+    "icons": {
+        "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+    "action": {
+        "default_popup":"popup.html"
+    },
+    "permissions": [
+        "tabs",
+        "tabGroups",
+        "scripting", 
+        "activeTab"
+    ],
+    "background":{}
+}
