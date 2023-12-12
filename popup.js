@@ -3,11 +3,10 @@ const checkVerify = document.getElementById("verify_test");
 const checkUnit = document.getElementById("unit_test");
 const YT_DATE = /.+\/\/track.ecwid.com\/youtrack\/issue\/(?<issue>[^\/]+)/;
 
-
-
 startBtn.addEventListener("click", () => {
     chrome.tabs.query({ active: true }, (tabs) => {
         const tab = tabs[0];
+        const group = tab.groupId;
         const url = tab.url;
         //Проверяем, это тикет Youtrack или нет
         let YT = YT_DATE.exec(url);
@@ -19,7 +18,7 @@ startBtn.addEventListener("click", () => {
             groupTitle += url[i];
         };
         if (YT.groups.issue) {
-            //Парсим страницу YT тикета, чтобы получить значение Ветки
+            //Парсим страницу YT тикета, чтобы получить значение Ветки и название тикета
             chrome.scripting.executeScript(
                 {
                     target: { tabId: tab.id, allFrames: true },
@@ -29,28 +28,32 @@ startBtn.addEventListener("click", () => {
                         chrome.runtime.sendMessage({ branch: branch, title: title });
                     }
                 });
-            //Получаем значение ветки и название тикета, создаем группу
+            //Получаем значение ветки и название тикета
             chrome.runtime.onMessage.addListener(function (message) {
                 let branch = message.branch;
                 let title = message.title;
                 const VerifyUrl = 'https://devcity.ecwid.com/buildConfiguration/Tests_UpsourceVerify?branch=' + branch + '&buildTypeTab=overview&mode=builds';
                 const UnitUrl = 'https://devcity.ecwid.com/buildConfiguration/Tests_UnitTestCoverage?branch=' + branch + '&buildTypeTab=overview&mode=builds';
                 groupTitle = groupTitle + ' ' + title;
-                chrome.tabs.group({ tabIds: tab.id }, function (groupId) {
-                    chrome.tabGroups.update(groupId, { collapsed: false, title: groupTitle });
-                    //Добавляем в группу вкладку с верифай тестами, если чекбокс нажат
-                    if (checkVerify.checked) {
-                        chrome.tabs.create({ url: VerifyUrl, active: false }, function (verify) {
-                            chrome.tabs.group({ tabIds: verify.id, groupId });
-                        });
-                    };
-                    //Добавляем в группу вкладку с юнит тестами, если чекбокс нажат
-                    if (checkUnit.checked) {
-                        chrome.tabs.create({ url: UnitUrl, active: false }, function (unit) {
-                            chrome.tabs.group({ tabIds: unit.id, groupId });
-                        });
-                    };
-                });
+                //Проверяем, что вкладка не в группе, и создаем группу
+                if (group == -1) {
+                    chrome.tabs.group({ tabIds: tab.id }, function (groupId) {
+                        chrome.tabGroups.update(groupId, { collapsed: false, title: groupTitle });
+                        //Добавляем в группу вкладку с верифай тестами, если чекбокс нажат
+                        if (checkVerify.checked) {
+                            chrome.tabs.create({ url: VerifyUrl, active: false }, function (verify) {
+                                chrome.tabs.group({ tabIds: verify.id, groupId });
+                            });
+                        };
+                        //Добавляем в группу вкладку с юнит тестами, если чекбокс нажат
+                        if (checkUnit.checked) {
+                            chrome.tabs.create({ url: UnitUrl, active: false }, function (unit) {
+                                chrome.tabs.group({ tabIds: unit.id, groupId });
+                            });
+                        };
+                        window.close();
+                    });
+                };
             });
         } else {
             alert("There are no active tabs");
