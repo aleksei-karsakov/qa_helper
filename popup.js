@@ -23,9 +23,10 @@ startBtn.addEventListener("click", () => {
                 {
                     target: { tabId: tab.id, allFrames: true },
                     func: () => {
-                        branch = document.querySelector('body > div.app > div > div > div.app__view > yt-analytics-zone > yt-feature-zone > yt-issue-view > yt-issue-layout > div > div.yt-issue-layout__sidebar-container > div > yt-issue-layout-sidebar > div.yt-flex-box.yt-flex-column.yt-issue-sidebar-container > div > div > yt-issue-fields-panel > div > table > tbody > tr:nth-child(12) > td.yt-issue-key-value-list__column.yt-issue-key-value-list__column_value > span.yt-issue-fields-panel__field-value.ring-link.ring-link_pseudo > span > yt-events-animator > yt-event-animate > span > span > yt-issue-custom-field-simple > button').innerText;
-                        title = document.querySelector('body > div.app > div > div > div.app__view > yt-analytics-zone > yt-feature-zone > yt-issue-view > yt-issue-layout > div > div.yt-issue-layout__wrapper > div > yt-issue-layout-body > yt-issue-body > yt-dropzone > div > ng-transclude > yt-analytics-zone > div > yt-events-animator > yt-event-animate:nth-child(1) > h1').innerText;
+                        branch = document.querySelector('#simplified-root > div > div > div > div > div.main__a43.flex__b42.wide__a34.ticketPage__e26 > article > div > div > aside > div.sidebar__de9.hasHeader__a13 > div.sidebarContentWrapper__af2.sidebarContentWrapperTwoColumns__c4e > div:nth-child(12) > div > div > div > div.fieldFormTwoColumns__fa5 > span.sidebarField__dde.multiline__d74 > button > span > span').innerText;
+                        title = document.querySelector('#simplified-root > div > div > div > div > div.main__a43.flex__b42.wide__a34.ticketPage__e26 > article > div > div > div > div.header__aeb.ticketHeaderSticky__a24 > div.highlighter__ad2.highlighter__f23 > div.heading__b3c > span > div > button > h1').innerText;
                         chrome.runtime.sendMessage({ branch: branch, title: title });
+
                     }
                 });
             //Получаем значение ветки и название тикета
